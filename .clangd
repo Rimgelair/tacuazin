@@ -1,0 +1,21 @@
+
+Diagnostics:
+  ClangTidy:
+    Add: [
+      "readability-identifier-naming",
+      "bugprone-*"
+    ]
+    CheckOptions:
+      readability-identifier-naming.StructCase: CamelCase
+      readability-identifier-naming.UnionCase: CamelCase
+      readability-identifier-naming.FunctionCase: lower_case
+      readability-identifier-naming.ParameterCase: camelBack
+      readability-identifier-naming.LocalVariableCase: camelBack
+      readability-identifier-naming.StructMemberCase: lower_case
+      readability-identifier-naming.LocalConstantCase: UPPERCASE
+
+  UnusedIncludes: Strict
+
+CompileFlags:
+  CompilationDatabase: "build"
+
