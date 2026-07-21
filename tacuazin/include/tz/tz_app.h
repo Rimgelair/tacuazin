@@ -1,8 +1,15 @@
 #pragma once
 
+#include "tz/tz_vector.h"
 #include "tz/tz_string.h"
 
 typedef struct TzApp TzApp;
 
-TzApp * tz_app_make(TzString title, int width, int height);
+typedef struct {
+  TzString title;
+  TzVector2i dimensions;
+} TzAppProps;
+
+TzApp * tz_app_make(TzAppProps *appProps);
+void tz_app_run(TzApp *app);
 void tz_app_destroy(TzApp *app);
