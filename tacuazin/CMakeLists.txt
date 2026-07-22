@@ -1,4 +1,4 @@
-add_library(tacuazin_internal STATIC src/tz_app.c src/tz_string.c)
+add_library(tacuazin_internal STATIC src/tz_app.c src/tz_string.c src/tz_arena.c)
 
 add_library(Tacuazin::tacuazin ALIAS tacuazin_internal)
 
