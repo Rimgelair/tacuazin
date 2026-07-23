@@ -1,16 +1,16 @@
 #include "tz/tz_allocator.h"
 #include "tz/tz_app.h"
-#include "tz/tz_string.h"
 #include "tz/tz_arena.h"
 #include "tz/tz_memory.h"
+#include "tz/tz_string.h"
 
 #include <stdlib.h>
 
 int main() {
 
     void *backingBuffer = malloc(mib(1));
-    
-    TzArena  arena;
+
+    TzArena arena;
     tz_arena_init(&arena, backingBuffer, mib(1));
 
     TzAllocator appAlloc = tz_arena_as_allocator(&arena);

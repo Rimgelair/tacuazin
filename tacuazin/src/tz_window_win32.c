@@ -1,7 +1,7 @@
+#include "tz/tz_allocator.h"
 #include "tz/tz_window.h"
 
 #include <Windows.h>
-#include <stdlib.h>
 #include <stringapiset.h>
 
 struct TzWindow {
@@ -12,7 +12,7 @@ struct TzWindow {
     int should_close;
 };
 
-wchar_t *tz_string_to_wide(const TzString *str);
+wchar_t *tz_string_to_wide(const TzString *str, TzAllocator allocator);
 
 static LRESULT CALLBACK tz_win32_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     TzWindow *window = (TzWindow *)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
@@ -32,14 +32,14 @@ static LRESULT CALLBACK tz_win32_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
     return DefWindowProcW(hwnd, uMsg, wParam, lParam);
 }
 
-TzWindow *tz_window_make(TzString title, TzVector2i dimensions) {
-    TzWindow *newwindow = malloc(sizeof(TzWindow));
+TzWindow *tz_window_make(TzString title, TzVector2i dimensions, TzAllocator allocator) {
+    TzWindow *newwindow = tz_allocator_alloc(allocator, TzWindow);
     newwindow->h_instance = GetModuleHandle(NULL);
 
     newwindow->width = dimensions.x;
     newwindow->height = dimensions.y;
 
-    wchar_t *titleW = tz_string_to_wide(&title);
+    wchar_t *titleW = tz_string_to_wide(&title, allocator);
 
     const wchar_t className[] = L"TacuazinWindowClass";
 
@@ -58,9 +58,6 @@ TzWindow *tz_window_make(TzString title, TzVector2i dimensions) {
     ShowWindow(newwindow->window_handle, SW_SHOWNORMAL);
     newwindow->should_close = 0;
 
-    // TODO: maybe use temp allocator here
-    free(titleW);
-
     return newwindow;
 }
 
@@ -74,13 +71,12 @@ void tz_window_poll_events(TzWindow *window) {
 
 int tz_window_should_close(TzWindow *window) { return window->should_close; }
 
-void tz_window_destroy(TzWindow *window) {
+void tz_window_destroy(TzWindow *window, TzAllocator allocator) {
     DestroyWindow(window->window_handle);
     UnregisterClassW(L"TacuazinWindowClass", window->h_instance);
-    free(window);
 }
 
-wchar_t *tz_string_to_wide(const TzString *str) {
+wchar_t *tz_string_to_wide(const TzString *str, TzAllocator allocator) {
     if (!str || !str->buffer)
         return NULL;
 
@@ -88,7 +84,7 @@ wchar_t *tz_string_to_wide(const TzString *str) {
     if (wideLen == 0)
         return NULL;
 
-    wchar_t *wbuffer = (wchar_t *)malloc((wideLen + 1) * sizeof(wchar_t));
+    wchar_t *wbuffer = (wchar_t *)tz_allocator_alloc_array(allocator, wchar_t, wideLen + 1);
     if (!wbuffer)
         return NULL;
 
