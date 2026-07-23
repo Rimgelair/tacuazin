@@ -19,7 +19,7 @@ TzApp *tz_app_make(TzAppProps *appProps) {
     tz_arena_init(&arena, arenaBackingBuffer, mib(1));
     TzAllocator temp = tz_arena_as_allocator(&arena);
 
-    TzApp *newApp = (TzApp *)tz_allocator_alloc(temp, TzApp);
+    TzApp *newApp = tz_allocator_alloc(temp, TzApp);
     newApp->app_props = *appProps;
     newApp->window = tz_window_make(newApp->app_props.title, newApp->app_props.dimensions, temp);
     newApp->temp_allocator = arena;

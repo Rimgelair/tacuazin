@@ -25,12 +25,12 @@ typedef struct {
 } TzAllocator;
 
 #define tz_allocator_alloc(allocator, type)                                                        \
-    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC, sizeof(type),              \
-                                alignof(type), NULL, 0))
+    (type *)((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC, sizeof(type),      \
+                                        alignof(type), NULL, 0))
 
 #define tz_allocator_alloc_array(allocator, type, count)                                           \
-    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC, sizeof(type) * (count),    \
-                                alignof(type), NULL, 0))
+    (type *)((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC,                    \
+                                        sizeof(type) * (count), alignof(type), NULL, 0))
 
 #define tz_allocator_free_all(allocator)                                                           \
     ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_FREE_ALL, 0, 0, NULL, 0))\

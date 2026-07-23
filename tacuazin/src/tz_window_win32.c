@@ -84,7 +84,7 @@ wchar_t *tz_string_to_wide(const TzString *str, TzAllocator allocator) {
     if (wideLen == 0)
         return NULL;
 
-    wchar_t *wbuffer = (wchar_t *)tz_allocator_alloc_array(allocator, wchar_t, wideLen + 1);
+    wchar_t *wbuffer = tz_allocator_alloc_array(allocator, wchar_t, wideLen + 1);
     if (!wbuffer)
         return NULL;
 

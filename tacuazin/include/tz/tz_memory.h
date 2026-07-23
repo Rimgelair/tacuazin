@@ -19,3 +19,5 @@ static inline uintptr_t align_forward(uintptr_t address, size_t alignment) {
 
     return (address + (alignment - 1)) & ~(alignment - 1);
 }
+
+size_t get_platform_page_size();

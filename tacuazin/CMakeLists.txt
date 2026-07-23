@@ -13,7 +13,7 @@ if(APPLE)
     target_sources(tacuazin_internal PRIVATE src/tz_window_cocoa.m)
     target_compile_definitions(tacuazin_internal PRIVATE TZ_OSX)
 elseif(WIN32)
-    target_sources(tacuazin_internal PRIVATE src/tz_window_win32.c)
+    target_sources(tacuazin_internal PRIVATE src/tz_window_win32.c src/tz_memory_win32.c)
     target_compile_definitions(tacuazin_internal PRIVATE 
       TZ_WIN32
       WIN32_LEAN_AND_MEAN
