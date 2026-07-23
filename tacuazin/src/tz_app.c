@@ -1,23 +1,24 @@
 #include "tz/tz_app.h"
 #include "tz/tz_allocator.h"
-#include "tz/tz_arena.h"
 #include "tz/tz_memory.h"
+#include "tz/tz_stack_allocator.h"
 #include "tz/tz_window.h"
 
 #include <stdlib.h>
 
 struct TzApp {
     TzAppProps app_props;
-    TzArena temp_allocator;
+    TzStackAllocator temp_allocator;
     TzWindow *window;
 };
 
 TzApp *tz_app_make(TzAppProps *appProps) {
+
     // Allocator Setup
     void *arenaBackingBuffer = malloc(mib(1));
-    TzArena arena;
-    tz_arena_init(&arena, arenaBackingBuffer, mib(1));
-    TzAllocator temp = tz_arena_as_allocator(&arena);
+    TzStackAllocator arena;
+    tz_stack_allocator_init(&arena, arenaBackingBuffer, mib(1));
+    TzAllocator temp = tz_stack_allocator_as_allocator(&arena);
 
     TzApp *newApp = tz_allocator_alloc(temp, TzApp);
     newApp->app_props = *appProps;
@@ -34,6 +35,6 @@ void tz_app_run(TzApp *app) {
 }
 
 void tz_app_destroy(TzApp *app) {
-    tz_window_destroy(app->window, tz_arena_as_allocator(&app->temp_allocator));
+    tz_window_destroy(app->window, tz_stack_allocator_as_allocator(&app->temp_allocator));
     free(app->temp_allocator.buffer);
 }
