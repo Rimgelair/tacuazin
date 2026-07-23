@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stddef.h>
 #include <stdalign.h>
+#include <stddef.h>
 
 typedef enum {
     TZ_ALLOC_MODE_ALLOC,
@@ -24,8 +24,9 @@ typedef struct {
     TzAllocationFunction alloc_function;
 } TzAllocator;
 
-#define tz_allocator_alloc(allocator, type) \
-    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC, sizeof(type), alignof(type), NULL, 0)) \
+#define tz_allocator_alloc(allocator, type)                                                        \
+    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_ALLOC, sizeof(type),              \
+                                alignof(type), NULL, 0))
 
-#define tz_allocator_free_all(allocator) \
-    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_FREE_ALL, 0, 0, NULL, 0)) \
+#define tz_allocator_free_all(allocator)                                                           \
+    ((allocator).alloc_function((allocator).state, TZ_ALLOC_MODE_FREE_ALL, 0, 0, NULL, 0))\

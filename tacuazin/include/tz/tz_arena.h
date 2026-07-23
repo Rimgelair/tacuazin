@@ -6,10 +6,10 @@
 #include <stdint.h>
 
 typedef struct {
-  uint8_t *buffer;
-  size_t capacity;
-  size_t offset;
+    uint8_t *buffer;
+    size_t capacity;
+    size_t offset;
 } TzArena;
 
 void tz_arena_init(TzArena *arena, uint8_t *backingBuffer, size_t capacity);
-TzAllocator tz_arena_as_allocator(TzArena* arena);
+TzAllocator tz_arena_as_allocator(TzArena *arena);
